@@ -1,10 +1,14 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 import styles from "./index.module.scss";
 
 export const InputPlus = ({ onAdd }) => {
   const [inputValue, setInputVelue] = useState("");
+  const onAddMemoized = useCallback(() => {
+    onAdd(inputValue);
+    setInputVelue("");
+  }, [inputValue]);
   return (
     <div className={styles.inputPlus}>
       <input
@@ -17,15 +21,13 @@ export const InputPlus = ({ onAdd }) => {
         }}
         onKeyDown={(event) => {
           if (event.key === "Enter") {
-            onAdd(inputValue);
-            setInputVelue("");
+            onAddMemoized();
           }
         }}
       />
       <button
         onClick={() => {
-          onAdd(inputValue);
-          setInputVelue("");
+          onAddMemoized();
         }}
         aria-label="Add"
         className={styles.inputPlusButton}

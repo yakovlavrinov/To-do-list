@@ -34,7 +34,33 @@ export const App = () => {
           <p className={styles.articleText}>There is no one task.</p>
         )}
         {tasks.map((task) => (
-          <InputTask key={task.id} title={task.title} />
+          <InputTask
+            key={task.id}
+            id={task.id}
+            title={task.title}
+            onEdited={(id, value) => {
+              setTask(
+                tasks.map((task) =>
+                  task.id === id
+                    ? {
+                        ...task,
+                        title: value,
+                      }
+                    : task
+                )
+              );
+            }}
+            onRemove={(id) => {
+              setTask(tasks.filter((task) => task.id !== id));
+            }}
+            onDone={(id) => {
+              setTask(
+                tasks.filter((task) => {
+                  task.id !== id;
+                })
+              );
+            }}
+          />
         ))}
       </section>
     </article>
